@@ -33,10 +33,11 @@ You can install Sc2Builder with git :
 ```shell
 $ git clone https://github.com/phraust1612/sc2builder.git
 $ python3 sc2builder/Sc2Builder protoss
-'''
+```
 
 You can pass your race via command line, but it's not necessary.
 If sys gets no argv about race, it will automatically bring protoss.
+
 
 ### zip files
 
