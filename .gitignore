@@ -1,0 +1,3 @@
+jpgFiles/*
+*.pyc
+__pycache__/*
