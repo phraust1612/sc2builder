@@ -43,3 +43,6 @@ If sys gets no argv about race, it will automatically bring protoss.
 
 You can also directly download zip files that matches to your OS.
 Unzip it and execute 'Sc2Builder.exe'
+
+[Windows 32bits download link](https://github.com/phraust1612/sc2builder/raw/master/build/Sc2Builder_Windows32.zip)
+[Linux 64bits download link](https://github.com/phraust1612/sc2builder/raw/master/build/Sc2Builder_Linux64.zip)
