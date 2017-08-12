@@ -16,7 +16,15 @@ def SecondToStr(sec):
     return "%02d : %02d"%(m,sec)
 
 def IconPath(name):
-    for root, dirs, files in os.walk("jpgFiles"):
+    path = 'jpgFiles'
+    if os.path.exists('jpgFiles'):
+        path = 'jpgFiles'
+    elif os.path.exists('../../jpgFiles'):
+        path = '../../jpgFiles'
+    else:
+        return error.NoPathExists
+
+    for root, dirs, files in os.walk(path):
         if name+".jpg" in files:
             return os.path.join(root, name)+".jpg"
         if name+".png" in files:
@@ -40,10 +48,12 @@ class sc2buildUI(QMainWindow):
         self.setFixedSize(1280,635)
         self.center()
         self.setWindowTitle('sc2builder')
+        filename = IconPath('sc2icon')
+        if filename != error.NoPathExists:
+            self.setWindowIcon(QIcon(filename))
 
         menu = self.menuBar()
-        # this works on for several kinds of OS, and vice versa
-        # but I'm not sure which OS needs this command
+        # this works on for several kinds of OS
         menu.setNativeMenuBar(False)
 
         menu_file = menu.addMenu('File')
@@ -157,9 +167,13 @@ class sc2buildUI(QMainWindow):
         self.gasButton.resize(30,30)
         self.mineralButton.move(980, 85)
         self.gasButton.move(1010,85)
-        self.mineralButton.setIcon(QIcon(IconPath('mineral')))
+        filename = IconPath('mineral')
+        if filename != error.NoPathExists:
+            self.mineralButton.setIcon(QIcon(filename))
         self.mineralButton.setIconSize(QSize(28,28))
-        self.gasButton.setIcon(QIcon(IconPath('gas')))
+        filename = IconPath('gas')
+        if filename != error.NoPathExists:
+            self.gasButton.setIcon(QIcon(filename))
         self.gasButton.setIconSize(QSize(28,28))
         self.mineralButton.clicked.connect(lambda: self.gatherMineral())
         self.gasButton.clicked.connect(lambda: self.gatherGas())
@@ -170,7 +184,9 @@ class sc2buildUI(QMainWindow):
             self.skillButton[-1].move(1040+30*x, 85)
             self.skillButton[x].clicked.connect(lambda state, xx = x: self.useSkill(xx))
         if self.race == "protoss":
-            self.skillButton[0].setIcon(QIcon(IconPath('chronoboost')))
+            filename = IconPath('chronoboost')
+            if filename != error.NoPathExists:
+                self.skillButton[0].setIcon(QIcon(filename))
             self.skillButton[0].setIconSize(QSize(28,28))
 
         unit_ = list(unit_dict['unit'][self.race].items())
@@ -182,6 +198,8 @@ class sc2buildUI(QMainWindow):
                 self.unitButton[-1].clicked.connect(lambda state,i=5*y+x: self.unitBuild(i))
         for i in range(len(unit_)):
             filename = IconPath(unit_[i][0])
+            if filename == error.NoPathExists:
+                continue
             if type(filename) == type(""):
                 self.unitButton[unit_[i][1]['no']].setIcon(QIcon(filename))
                 self.unitButton[unit_[i][1]['no']].setIconSize(QSize(28,28))
@@ -195,6 +213,8 @@ class sc2buildUI(QMainWindow):
                 self.buildingButton[-1].clicked.connect(lambda state,i=5*y+x: self.structureBuild(i))
         for i in range(len(building_)):
             filename = IconPath(building_[i][0])
+            if filename == error.NoPathExists:
+                continue
             if type(filename) == type(""):
                 self.buildingButton[building_[i][1]['no']].setIcon(QIcon(filename))
                 self.buildingButton[building_[i][1]['no']].setIconSize(QSize(28,28))
@@ -207,7 +227,9 @@ class sc2buildUI(QMainWindow):
                 self.upgradeButton[-1].move(980+30*x,445+30*y)
                 self.upgradeButton[-1].clicked.connect(lambda state,i=5*y+x: self.upgradeBuild(i))
         for i in range(len(upgrade_)):
-            filename = 'jpgFiles/protoss/upgrades/' + upgrade_[i][0]
+            filename = IconPath(upgrade_[i][0])
+            if filename == error.NoPathExists:
+                continue
             if type(filename) == type(""):
                 self.upgradeButton[upgrade_[i][1]['no']].setIcon(QIcon(filename))
                 self.upgradeButton[upgrade_[i][1]['no']].setIconSize(QSize(28,28))
@@ -438,6 +460,8 @@ class sc2buildUI(QMainWindow):
         for i in range(len(self.engine.input)):
             self.inputTable.setColumnWidth(i, 30)
             filename = IconPath(self.engine.input[i][0])
+            if filename == error.NoPathExists:
+                continue
             if type(filename) == type(""):
                 self.inputTable.setItem(0, i, QTableWidgetItem())
                 icon = QIcon(filename)

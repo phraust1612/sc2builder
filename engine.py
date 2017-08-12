@@ -1,5 +1,5 @@
 from unit import *
-from struct import *
+from unitclass import *
 import error
 
 class Engine():
